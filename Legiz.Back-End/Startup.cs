@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Legiz.Back_End.Shared.Persistence;
+using Legiz.Back_End.UserProfileBC.Domain.Repositories;
+using Legiz.Back_End.UserProfileBC.Domain.Services;
+using Legiz.Back_End.UserProfileBC.Persistence.Repositories;
+using Legiz.Back_End.UserProfileBC.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -36,16 +40,20 @@ namespace Legiz.Back_End
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Legiz.Back_End", Version = "v1"});
+                c.EnableAnnotations();
             });
             
             // Configure In-Memory Database
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseInMemoryDatabase("supermarket-api-in-memory");
+                options.UseInMemoryDatabase("legiz-api-in-memory");
             });
             
             // Dependency Injection Rules (Asociación de una interfaz con una clase concreta)
-            
+            services.AddScoped<ILawyerRepository, LawyerRepository>();
+            services.AddScoped<ILawyerService, LawyerService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             // AutoMapper Dependency Injection
             services.AddAutoMapper(typeof(Startup));
         }
