@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Legiz.Back_End.Shared.Domain.Repositories;
 using Legiz.Back_End.UserProfileBC.Domain.Models;
 using Legiz.Back_End.UserProfileBC.Domain.Repositories;
 using Legiz.Back_End.UserProfileBC.Domain.Services;
@@ -12,12 +13,13 @@ namespace Legiz.Back_End.UserProfileBC.Services
     {
         private readonly ILawyerRepository _lawyerRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ISubscriptionRepository _subscriptionRepository;
         
-        
-        public LawyerService(ILawyerRepository lawyerRepository, IUnitOfWork unitOfWork)
+        public LawyerService(ILawyerRepository lawyerRepository, IUnitOfWork unitOfWork, ISubscriptionRepository subscriptionRepository)
         {
             _lawyerRepository = lawyerRepository;
             _unitOfWork = unitOfWork;
+            _subscriptionRepository = subscriptionRepository;
         }
 
         public async Task<IEnumerable<Lawyer>> ListAsync()
@@ -47,6 +49,12 @@ namespace Legiz.Back_End.UserProfileBC.Services
 
         public async Task<LawyerResponse> SaveAsync(Lawyer lawyer)
         {
+            // Validate SubscriptionId
+            var existingSubscription = _subscriptionRepository.FindByIdAsync(lawyer.SubscriptionId);
+
+            if (existingSubscription == null)
+                return new LawyerResponse("Invalid Subscription");
+            
             try
             {
                 await _lawyerRepository.AddAsync(lawyer);
@@ -66,14 +74,14 @@ namespace Legiz.Back_End.UserProfileBC.Services
 
             if (existingLawyer == null)
                 return new LawyerResponse("Lawyer not found.");
-
+            
             existingLawyer.Username = lawyer.Username;
-            existingLawyer.Password = lawyer.Password;
+            existingLawyer.PasswordHash = lawyer.PasswordHash;
             existingLawyer.Email = lawyer.Email;
+            existingLawyer.Phone = lawyer.Phone;
             existingLawyer.LawyerName = lawyer.LawyerName;
             existingLawyer.LawyerLastName = lawyer.LawyerLastName;
             existingLawyer.District = lawyer.District;
-            existingLawyer.Phone = lawyer.Phone;
             existingLawyer.Specialization = lawyer.Specialization;
             existingLawyer.University = lawyer.University;
             existingLawyer.PriceCustomContract = lawyer.PriceCustomContract;

@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Legiz.Back_End.Shared.Persistence;
-using Legiz.Back_End.UserProfileBC.Domain.Repositories;
+using Legiz.Back_End.Shared.Domain.Repositories;
+using Legiz.Back_End.Shared.Persistence.Contexts;
 
-namespace Legiz.Back_End.UserProfileBC.Persistence.Repositories
+namespace Legiz.Back_End.Shared.Persistence.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
@@ -12,7 +12,7 @@ namespace Legiz.Back_End.UserProfileBC.Persistence.Repositories
         {
             _context = context;
         }
-
+        
         public async Task CompleteAsync()
         {
             await _context.SaveChangesAsync();

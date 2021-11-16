@@ -12,19 +12,27 @@ namespace Legiz.Back_End.UserProfileBC.Resources
         
         [Required]
         [NotNull]
-        [MaxLength(10)]
         public string Password { get; set; }
         
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+        
+        [Required]
+        [MaxLength(9)]
+        public string Phone { get; set; }
+        
+        [Required]
+        [NotNull]
+        public string LawyerName { get; set; }
+        
+        [Required]
+        [NotNull]
+        public string LawyerLastName { get; set; }
 
         [Required]
         public string District { get; set; }
-        
-        [Required]
-        public string Phone { get; set; }
-        
+
         [Required]
         public string University { get; set; }
 
@@ -37,5 +45,8 @@ namespace Legiz.Back_End.UserProfileBC.Resources
         
         [Required]
         public int PriceCustomContract { get; set; }
+        
+        [Required]
+        public int SubscriptionId { get; set; }
     }
 }
