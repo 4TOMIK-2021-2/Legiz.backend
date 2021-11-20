@@ -24,4 +24,8 @@
         </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Legiz.Back-End\Legiz.Back-End.csproj" />
+    </ItemGroup>
+
 </Project>

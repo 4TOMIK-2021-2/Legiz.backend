@@ -1,17 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Legiz.Back_End.LawServiceBC.Domain.Repositories;
+using Legiz.Back_End.LawServiceBC.Domain.Services;
+using Legiz.Back_End.LawServiceBC.Persistence.Repositories;
+using Legiz.Back_End.LawServiceBC.Services;
+using Legiz.Back_End.Shared.Domain.Repositories;
 using Legiz.Back_End.Shared.Persistence;
+using Legiz.Back_End.Shared.Persistence.Contexts;
+using Legiz.Back_End.Shared.Persistence.Repositories;
+using Legiz.Back_End.UserProfileBC.Domain.Repositories;
+using Legiz.Back_End.UserProfileBC.Domain.Services;
+using Legiz.Back_End.UserProfileBC.Persistence.Repositories;
+using Legiz.Back_End.UserProfileBC.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
 namespace Legiz.Back_End
@@ -36,16 +40,30 @@ namespace Legiz.Back_End
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "Legiz.Back_End", Version = "v1"});
+                c.EnableAnnotations();
             });
             
             // Configure In-Memory Database
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseInMemoryDatabase("supermarket-api-in-memory");
+                options.UseInMemoryDatabase("legiz-api-in-memory");
             });
             
             // Dependency Injection Rules (Asociación de una interfaz con una clase concreta)
-            
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ILawyerRepository, LawyerRepository>();
+            services.AddScoped<ILawyerService, LawyerService>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<ICustomLegalCaseRepository, CustomLegalCaseRepository>();
+            services.AddScoped<ICustomLegalCaseService, CustomLegalCaseService>();
+            services.AddScoped<ILegalAdviceRepository, LegalAdviceRepository>();
+            services.AddScoped<ILegalAdviceService, LegalAdviceService>();
+            services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+            services.AddScoped<ISubscriptionService, SubscriptionService>();
+            services.AddScoped<ILegalDocumentRepository, LegalDocumentRepository>();
+            services.AddScoped<ILegalDocumentService, LegalDocumentService>();
+
             // AutoMapper Dependency Injection
             services.AddAutoMapper(typeof(Startup));
         }
@@ -57,7 +75,7 @@ namespace Legiz.Back_End
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Legiz.Back_End v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("./v1/swagger.json", "Legiz.Back_End v1"));
             }
 
             app.UseHttpsRedirection();
