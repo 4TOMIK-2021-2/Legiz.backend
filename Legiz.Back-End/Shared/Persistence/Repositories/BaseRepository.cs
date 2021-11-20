@@ -1,6 +1,6 @@
-﻿using Legiz.Back_End.Shared.Persistence;
+﻿using Legiz.Back_End.Shared.Persistence.Contexts;
 
-namespace Legiz.Back_End.UserProfileBC.Persistence.Repositories
+namespace Legiz.Back_End.Shared.Persistence.Repositories
 {
     public abstract class BaseRepository
     {

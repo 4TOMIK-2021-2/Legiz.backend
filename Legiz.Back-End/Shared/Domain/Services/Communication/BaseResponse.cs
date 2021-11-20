@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Legiz.Back_End.UserProfileBC.Domain.Services.Communication
+namespace Legiz.Back_End.Shared.Domain.Services.Communication
 {
     public abstract class BaseResponse<T>
     {

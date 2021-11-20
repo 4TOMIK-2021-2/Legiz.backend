@@ -8,12 +8,31 @@
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="10.1.1" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.12" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.11" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.11" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.11" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational.Design" Version="1.1.6" />
+        <PackageReference Include="MySql.EntityFrameworkCore" Version="5.0.8" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
         <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.2.3" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.14.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="SecurityBC\Authorization\Attributes" />
+      <Folder Include="SecurityBC\Authorization\Handlers\Implementations" />
+      <Folder Include="SecurityBC\Authorization\Handlers\Interfaces" />
+      <Folder Include="SecurityBC\Authorization\Middleware" />
+      <Folder Include="SecurityBC\Authorization\Settings" />
+      <Folder Include="SecurityBC\Domain\Models" />
+      <Folder Include="SecurityBC\Domain\Repositories" />
+      <Folder Include="SecurityBC\Domain\Services\Communication" />
+      <Folder Include="SecurityBC\Mapping" />
+      <Folder Include="SecurityBC\Persistence\Repositories" />
+      <Folder Include="SecurityBC\Resources" />
+      <Folder Include="SecurityBC\Services" />
     </ItemGroup>
 
 </Project>

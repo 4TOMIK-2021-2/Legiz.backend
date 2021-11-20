@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Legiz.Back_End.Shared.Persistence;
+using Legiz.Back_End.Shared.Persistence.Contexts;
+using Legiz.Back_End.Shared.Persistence.Repositories;
 using Legiz.Back_End.UserProfileBC.Domain.Models;
 using Legiz.Back_End.UserProfileBC.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -16,17 +16,21 @@ namespace Legiz.Back_End.UserProfileBC.Persistence.Repositories
 
         public async Task<IEnumerable<Lawyer>> ListAsync()
         {
-            return await _context.Users.OfType<Lawyer>().ToListAsync();
+            return await _context.Lawyers
+                .Include(p => p.Subscription)
+                .ToListAsync();
         }
 
         public async Task AddAsync(Lawyer lawyer)
         {
-            await _context.Users.AddAsync(lawyer);
+            await _context.Lawyers.AddAsync(lawyer);
         }
 
         public async Task<Lawyer> FindByIdAsync(int id)
         {
-            return await _context.Lawyers.FindAsync(id);
+            return await _context.Lawyers
+                .Include(p => p.Subscription)
+                .FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public void Update(Lawyer lawyer)
