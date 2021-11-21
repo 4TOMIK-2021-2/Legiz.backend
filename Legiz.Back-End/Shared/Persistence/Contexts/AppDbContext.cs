@@ -1,4 +1,5 @@
 ﻿using Legiz.Back_End.LawServiceBC.Domain.Models;
+using Legiz.Back_End.NetworkingBC.Domain.Models;
 using Legiz.Back_End.Shared.Extensions;
 using Legiz.Back_End.UserProfileBC.Domain.Models;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,8 @@ namespace Legiz.Back_End.Shared.Persistence.Contexts
         public DbSet<Lawyer> Lawyers { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
         public DbSet<LegalDocument> LegalDocuments { get; set; }
+        
+        public DbSet<Score> Scores { get; set; }
         
         public AppDbContext(DbContextOptions options) : base(options)
         {
@@ -101,7 +104,17 @@ namespace Legiz.Back_End.Shared.Persistence.Contexts
             (
                 new Subscription { Id = 1, Price = 60, Description = "New Subscription", State = EState.Current }
             );
+            
+            // NETWORKING BC
 
+            // Constraints
+            builder.Entity<Score>().ToTable("Scores");
+            builder.Entity<Score>().HasKey(p => p.Id);
+            builder.Entity<Score>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+            builder.Entity<Score>().Property(p => p.Star).IsRequired();
+            builder.Entity<Score>().Property(p => p.Comment).IsRequired();
+        
+            // Relationships - at stand by
 
             // Convention Snake_Case
             builder.UseSnakeCaseNamingConvention();

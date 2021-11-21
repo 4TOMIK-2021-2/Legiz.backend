@@ -2,6 +2,10 @@ using Legiz.Back_End.LawServiceBC.Domain.Repositories;
 using Legiz.Back_End.LawServiceBC.Domain.Services;
 using Legiz.Back_End.LawServiceBC.Persistence.Repositories;
 using Legiz.Back_End.LawServiceBC.Services;
+using Legiz.Back_End.NetworkingBC.Domain.Repository;
+using Legiz.Back_End.NetworkingBC.Domain.Services;
+using Legiz.Back_End.NetworkingBC.Persistence.Repositories;
+using Legiz.Back_End.NetworkingBC.Services;
 using Legiz.Back_End.Shared.Domain.Repositories;
 using Legiz.Back_End.Shared.Persistence;
 using Legiz.Back_End.Shared.Persistence.Contexts;
@@ -63,6 +67,8 @@ namespace Legiz.Back_End
             services.AddScoped<ISubscriptionService, SubscriptionService>();
             services.AddScoped<ILegalDocumentRepository, LegalDocumentRepository>();
             services.AddScoped<ILegalDocumentService, LegalDocumentService>();
+            services.AddScoped<IScoreRepository, ScoreRepository>();
+            services.AddScoped<IScoreService, ScoreService>();
 
             // AutoMapper Dependency Injection
             services.AddAutoMapper(typeof(Startup));
@@ -75,7 +81,7 @@ namespace Legiz.Back_End
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("./v1/swagger.json", "Legiz.Back_End v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Legiz.Back_End v1"));
             }
 
             app.UseHttpsRedirection();
