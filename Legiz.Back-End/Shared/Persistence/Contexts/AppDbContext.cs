@@ -1,13 +1,19 @@
-﻿using Legiz.Back_End.LawServiceBC.Domain.Models;
+﻿
+using Legiz.Back_End.LawServiceBC.Domain.Models;
 using Legiz.Back_End.NetworkingBC.Domain.Models;
+using Legiz.Back_End.SecurityBC.Domain.Models;
 using Legiz.Back_End.Shared.Extensions;
 using Legiz.Back_End.UserProfileBC.Domain.Models;
+using Legiz.Back_End.UserProfileBC.Resources;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Legiz.Back_End.Shared.Persistence.Contexts
 {
     public class AppDbContext : DbContext
     {
+        protected readonly IConfiguration _configuration;
+        
         // Sets
         public DbSet<LawService> LawServices { get; set; }
         public DbSet<CustomLegalCase> CustomLegalCases { get; set; }
@@ -18,13 +24,18 @@ namespace Legiz.Back_End.Shared.Persistence.Contexts
         public DbSet<Lawyer> Lawyers { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
         public DbSet<LegalDocument> LegalDocuments { get; set; }
-        
         public DbSet<Score> Scores { get; set; }
         
-        public AppDbContext(DbContextOptions options) : base(options)
+        public AppDbContext(DbContextOptions options, IConfiguration configuration) : base(options)
         {
+            _configuration = configuration;
         }
-        
+
+        protected override void OnConfiguring(DbContextOptionsBuilder builder)
+        {
+            builder.UseMySQL(_configuration.GetConnectionString("DefaultConnection"));
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -36,7 +47,6 @@ namespace Legiz.Back_End.Shared.Persistence.Contexts
             builder.Entity<CustomLegalCase>().HasBaseType<LawService>();
             
             // Constraints
-            builder.Entity<LawService>().ToTable("LawServices");
             builder.Entity<LawService>().HasKey(p => p.Id);
             builder.Entity<LawService>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
             builder.Entity<LawService>().Property(p => p.Title).IsRequired();
@@ -45,8 +55,7 @@ namespace Legiz.Back_End.Shared.Persistence.Contexts
 
             builder.Entity<CustomLegalCase>().Property(p => p.StartAt).IsRequired();
             builder.Entity<CustomLegalCase>().Property(p => p.FinishAt).IsRequired();
-
-            builder.Entity<LegalDocument>().ToTable("LegalDocuments");
+            
             builder.Entity<LegalDocument>().HasKey(p => p.Id);
             builder.Entity<LegalDocument>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
             builder.Entity<LegalDocument>().Property(p => p.Path).IsRequired();
@@ -68,25 +77,25 @@ namespace Legiz.Back_End.Shared.Persistence.Contexts
             builder.Entity<Lawyer>().HasBaseType<User>();
             builder.Entity<Customer>().HasBaseType<User>();
 
+            builder.Entity<User>().HasDiscriminator(p => p.UserType);
+
             // Constraints
             builder.Entity<User>().ToTable("Users");
             builder.Entity<User>().HasKey(p => p.Id);
             builder.Entity<User>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
-            builder.Entity<User>().Property(p => p.Email).IsRequired();
-            builder.Entity<User>().Property(p => p.Username).IsRequired().IsUnicode();
-            builder.Entity<User>().Property(p => p.PasswordHash).IsRequired().IsUnicode();
-            builder.Entity<User>().Property(p => p.Phone).IsRequired().IsUnicode().HasMaxLength(9);
-            
+            builder.Entity<User>().Property(p => p.Email).IsRequired().IsUnicode();
+            builder.Entity<User>().Property(p => p.Username).IsRequired().HasMaxLength(40).IsRequired();
+            builder.Entity<User>().Property(p => p.FirstName).IsRequired();
+            builder.Entity<User>().Property(p => p.LastName).IsRequired();
+
+            builder.Entity<Customer>().Property(p => p.Phone).IsRequired();
+            builder.Entity<Customer>().Property(p => p.Dni).IsRequired().IsUnicode();
+
             builder.Entity<Lawyer>().Property(p => p.District).IsRequired();
             builder.Entity<Lawyer>().Property(p => p.PriceCustomContract).IsRequired();
             builder.Entity<Lawyer>().Property(p => p.PriceLegalAdvice).IsRequired();
             builder.Entity<Lawyer>().Property(p => p.Specialization).IsRequired();
             builder.Entity<Lawyer>().Property(p => p.University).IsRequired();
-            builder.Entity<Lawyer>().Property(p => p.LawyerName).IsRequired();
-            builder.Entity<Lawyer>().Property(p => p.LawyerLastName).IsRequired();
-
-            builder.Entity<Customer>().Property(p => p.CustomerName).IsRequired();
-            builder.Entity<Customer>().Property(p => p.CustomerLastName).IsRequired();
 
             builder.Entity<Subscription>().ToTable("Subscriptions");
             builder.Entity<Subscription>().HasKey(p => p.Id);
@@ -113,8 +122,6 @@ namespace Legiz.Back_End.Shared.Persistence.Contexts
             builder.Entity<Score>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
             builder.Entity<Score>().Property(p => p.Star).IsRequired();
             builder.Entity<Score>().Property(p => p.Comment).IsRequired();
-        
-            // Relationships - at stand by
 
             // Convention Snake_Case
             builder.UseSnakeCaseNamingConvention();

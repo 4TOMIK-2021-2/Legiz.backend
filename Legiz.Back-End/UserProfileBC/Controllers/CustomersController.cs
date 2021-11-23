@@ -1,16 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using Legiz.Back_End.Shared.Extensions;
+using Legiz.Back_End.SecurityBC.Authorization.Attributes;
 using Legiz.Back_End.UserProfileBC.Domain.Models;
 using Legiz.Back_End.UserProfileBC.Domain.Services;
+using Legiz.Back_End.UserProfileBC.Domain.Services.Communication;
 using Legiz.Back_End.UserProfileBC.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Legiz.Back_End.UserProfileBC.Controllers
 {
+    [Authorize]
     [ApiController]
+    [Produces("application/json")]
     [Route("/api/v1/[controller]")]
     public class CustomersController : ControllerBase
     {
@@ -23,61 +26,46 @@ namespace Legiz.Back_End.UserProfileBC.Controllers
             _mapper = mapper;
         }
         
+        // ALL CUSTOMERS
         [SwaggerOperation(
             Summary = "Get All Customers",
             Description = "Get All Customers already stored",
             Tags = new[] {"Customers"})]
         [HttpGet]
-        public async Task<IEnumerable<CustomerResource>> GetAllAsync()
+        public async Task<IActionResult> GetAll()
         {
             var customers = await _customerService.ListAsync();
-            var resource = _mapper.Map<IEnumerable<Customer>,IEnumerable<CustomerResource>>(customers);
-            
-            return resource;
+            var resources = _mapper.Map<IEnumerable<Customer>,IEnumerable<CustomerResource>>(customers);
+            return Ok(resources);
         }
         
+        // REGISTER
         [SwaggerOperation(
-            Summary = "Post Customer",
-            Description = "Post new Customer",
+            Summary = "Register Customer",
+            Description = "Register new Customer",
             Tags = new[] {"Customers"})]
-        [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] SaveCustomerResource resource)
+        [Microsoft.AspNetCore.Authorization.AllowAnonymous]
+        [HttpPost("auth/sign-up")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Register(RegisterCustomerRequest request)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState.GetErrorMessages());
-
-            var customer = _mapper.Map<SaveCustomerResource, Customer>(resource);
-
-            var result = await _customerService.SaveAsync(customer);
-
-            if (!result.Success)
-                return BadRequest(result.Message);
-
-            var customerResource = _mapper.Map<Customer, CustomerResource>(result.Resource);
-            return Ok(customerResource);
+            await _customerService.RegisterAsync(request);
+            return Ok(new {message = "Registration successful."});
         }
         
+        // UPDATE
         [SwaggerOperation(
             Summary = "Update Customer By Id",
             Description = "Update Customer already stored",
             Tags = new[] {"Customers"})]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAsync(int id, [FromBody] SaveCustomerResource resource)
+        public async Task<IActionResult> Update(int id, UpdateCustomerRequest request)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState.GetErrorMessages());
-
-            var customer = _mapper.Map<SaveCustomerResource, Customer>(resource);
-
-            var result = await _customerService.UpdateAsync(id, customer);
-            
-            if (!result.Success)
-                return BadRequest(result.Message);
-
-            var customerResource = _mapper.Map<Customer, CustomerResource>(result.Resource);
-            return Ok(customerResource);
+            await _customerService.UpdateAsync(id, request);
+            return Ok(new {message = "Customer updated successfully"});
         }
         
+        // DELETE
         [SwaggerOperation(
             Summary = "Delete Customer By Id",
             Description = "Delete Customer already stored",
@@ -85,15 +73,11 @@ namespace Legiz.Back_End.UserProfileBC.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            var result = await _customerService.DeleteAsync(id);
-            
-            if (!result.Success)
-                return BadRequest(result.Message);
-
-            var customerResource = _mapper.Map<Customer, CustomerResource>(result.Resource);
-            return Ok(customerResource);
+            await _customerService.DeleteAsync(id);
+            return Ok(new {message = "Customer deleted successfully"});
         }
         
+        // GET BY ID
         [SwaggerOperation(
             Summary = "Get Customer By Id",
             Description = "Get Customer already stored",
@@ -101,13 +85,9 @@ namespace Legiz.Back_End.UserProfileBC.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
-            var result = await _customerService.GetByIdAsync(id);
-            
-            if (!result.Success)
-                return BadRequest(result.Message);
-
-            var customerResource = _mapper.Map<Customer, CustomerResource>(result.Resource);
-            return Ok(customerResource);
+            var customer = await _customerService.GetByIdAsync(id);
+            var resource = _mapper.Map<Customer, CustomerResource>(customer);
+            return Ok(resource);
         }
     }
 }

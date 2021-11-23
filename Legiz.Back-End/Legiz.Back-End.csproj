@@ -20,19 +20,4 @@
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.14.1" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="SecurityBC\Authorization\Attributes" />
-      <Folder Include="SecurityBC\Authorization\Handlers\Implementations" />
-      <Folder Include="SecurityBC\Authorization\Handlers\Interfaces" />
-      <Folder Include="SecurityBC\Authorization\Middleware" />
-      <Folder Include="SecurityBC\Authorization\Settings" />
-      <Folder Include="SecurityBC\Domain\Models" />
-      <Folder Include="SecurityBC\Domain\Repositories" />
-      <Folder Include="SecurityBC\Domain\Services\Communication" />
-      <Folder Include="SecurityBC\Mapping" />
-      <Folder Include="SecurityBC\Persistence\Repositories" />
-      <Folder Include="SecurityBC\Resources" />
-      <Folder Include="SecurityBC\Services" />
-    </ItemGroup>
-
 </Project>

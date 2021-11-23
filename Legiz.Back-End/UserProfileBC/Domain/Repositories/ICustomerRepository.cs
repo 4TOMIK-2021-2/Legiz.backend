@@ -9,6 +9,7 @@ namespace Legiz.Back_End.UserProfileBC.Domain.Repositories
         Task<IEnumerable<Customer>> ListAsync();
         Task AddAsync(Customer customer);
         Task<Customer> FindByIdAsync(int id);
+        Customer FindById(int id);
         void Update(Customer customer);
         void Remove(Customer customer);
     }

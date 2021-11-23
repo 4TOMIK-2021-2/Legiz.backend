@@ -8,9 +8,9 @@ namespace Legiz.Back_End.UserProfileBC.Domain.Services
     public interface ICustomerService
     {
         Task<IEnumerable<Customer>> ListAsync();
-        Task<CustomerResponse> GetByIdAsync(int id);
-        Task<CustomerResponse> SaveAsync(Customer customer);
-        Task<CustomerResponse> UpdateAsync(int id, Customer customer);
-        Task<CustomerResponse> DeleteAsync(int id);
+        Task<Customer> GetByIdAsync(int id);
+        Task RegisterAsync(RegisterCustomerRequest customer);
+        Task UpdateAsync(int id, UpdateCustomerRequest customer);
+        Task DeleteAsync(int id);
     }
 }
