@@ -25,5 +25,7 @@ namespace Legiz.Back_End.LawServiceBC.Resources
         
         [Required]
         public int LegalDocumentId { get; set; }
+        
+        public string LegalResponse { get; set; }
     }
 }
