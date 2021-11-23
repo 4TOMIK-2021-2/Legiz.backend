@@ -125,7 +125,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
  this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Username",
                             "Password",
@@ -138,7 +138,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Specialization",
                             "PriceLegalAdvice",
                             "PriceCustomContract"});
-                table1.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "1",
                             "m123",
                             "s1",
@@ -152,12 +152,12 @@ this.ScenarioInitialize(scenarioInfo);
                             "40",
                             "50"});
 #line 12
- testRunner.When("A Post Request is sent", ((string)(null)), table1, "When ");
+ testRunner.When("A Post Request is sent", ((string)(null)), table3, "When ");
 #line hidden
 #line 15
  testRunner.Then("A Response with Status 200 is received", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Username",
                             "Password",
@@ -170,7 +170,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "Specialization",
                             "PriceLegalAdvice",
                             "PriceCustomContract"});
-                table2.AddRow(new string[] {
+                table4.AddRow(new string[] {
                             "1",
                             "m123",
                             "s1",
@@ -184,7 +184,7 @@ this.ScenarioInitialize(scenarioInfo);
                             "40",
                             "50"});
 #line 16
- testRunner.And("A Lawyer Resource is included in Response Body", ((string)(null)), table2, "And ");
+ testRunner.And("A Lawyer Resource is included in Response Body", ((string)(null)), table4, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

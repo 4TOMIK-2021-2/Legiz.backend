@@ -8,9 +8,9 @@ namespace Legiz.Back_End.UserProfileBC.Domain.Services
     public interface ILawyerService
     {
         Task<IEnumerable<Lawyer>> ListAsync();
-        Task<LawyerResponse> GetByIdAsync(int id);
-        Task<LawyerResponse> SaveAsync(Lawyer lawyer);
-        Task<LawyerResponse> UpdateAsync(int id, Lawyer lawyer);
-        Task<LawyerResponse> DeleteAsync(int id);
+        Task<Lawyer> GetByIdAsync(int id);
+        Task RegisterAsync(RegisterLawyerRequest lawyer);
+        Task UpdateAsync(int id, UpdateLawyerRequest lawyer);
+        Task DeleteAsync(int id);
     }
 }

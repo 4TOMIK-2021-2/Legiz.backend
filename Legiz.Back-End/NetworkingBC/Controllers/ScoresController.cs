@@ -7,12 +7,14 @@ using Legiz.Back_End.LawServiceBC.Resources;
 using Legiz.Back_End.NetworkingBC.Domain.Models;
 using Legiz.Back_End.NetworkingBC.Domain.Services;
 using Legiz.Back_End.NetworkingBC.Resources;
+using Legiz.Back_End.SecurityBC.Authorization.Attributes;
 using Legiz.Back_End.Shared.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Legiz.Back_End.NetworkingBC.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("/api/v1/[controller]")]
     public class ScoresController : ControllerBase

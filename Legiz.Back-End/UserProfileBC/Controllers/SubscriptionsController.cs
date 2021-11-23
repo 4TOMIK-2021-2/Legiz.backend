@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Legiz.Back_End.SecurityBC.Authorization.Attributes;
 using Legiz.Back_End.Shared.Extensions;
 using Legiz.Back_End.UserProfileBC.Domain.Models;
 using Legiz.Back_End.UserProfileBC.Domain.Services;
@@ -10,6 +11,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace Legiz.Back_End.UserProfileBC.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("/api/v1/[controller]")]
     public class SubscriptionsController : ControllerBase
