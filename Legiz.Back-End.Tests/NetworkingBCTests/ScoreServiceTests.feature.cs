@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Legiz.Back_End.Tests.UserProfileBCTests
+namespace Legiz.Back_End.Tests.NetworkingBCTests
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,7 +19,7 @@ namespace Legiz.Back_End.Tests.UserProfileBCTests
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class LawyerServiceTestsFeature : object, Xunit.IClassFixture<LawyerServiceTestsFeature.FixtureData>, System.IDisposable
+    public partial class ScoreServiceTestsFeature : object, Xunit.IClassFixture<ScoreServiceTestsFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -28,10 +28,10 @@ namespace Legiz.Back_End.Tests.UserProfileBCTests
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "LawyerServiceTests.feature"
+#line 1 "ScoreServiceTests.feature"
 #line hidden
         
-        public LawyerServiceTestsFeature(LawyerServiceTestsFeature.FixtureData fixtureData, Legiz_Back_End_Tests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public ScoreServiceTestsFeature(ScoreServiceTestsFeature.FixtureData fixtureData, Legiz_Back_End_Tests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,7 +40,7 @@ namespace Legiz.Back_End.Tests.UserProfileBCTests
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "UserProfileBCTests", "LawyerServiceTests", "\tAs a Developer\r\n\tI want to add new Lawyer through API\r\n\tSo that It can be availa" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "NetworkingBCTests", "ScoreServiceTests", "\tAs a Developer\r\n\tI want to add new Lawyer through API\r\n\tSo that It can be availa" +
                     "ble for applications", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -81,7 +81,7 @@ namespace Legiz.Back_End.Tests.UserProfileBCTests
 #line 6
  #line hidden
 #line 7
-  testRunner.Given("the Endpoint https://localhost:5001/api/v1/lawyers is available", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.Given("the Endpoint https://localhost:5001/api/v1/scores is available", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
         
@@ -90,19 +90,17 @@ namespace Legiz.Back_End.Tests.UserProfileBCTests
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Add Lawyer")]
-        [Xunit.TraitAttribute("FeatureTitle", "LawyerServiceTests")]
-        [Xunit.TraitAttribute("Description", "Add Lawyer")]
-        [Xunit.TraitAttribute("Category", "lawyer-adding")]
-        [Xunit.TraitAttribute("Category", "mytag")]
-        public virtual void AddLawyer()
+        [Xunit.SkippableFactAttribute(DisplayName="Add Score")]
+        [Xunit.TraitAttribute("FeatureTitle", "ScoreServiceTests")]
+        [Xunit.TraitAttribute("Description", "Add Score")]
+        [Xunit.TraitAttribute("Category", "score-adding")]
+        public virtual void AddScore()
         {
             string[] tagsOfScenario = new string[] {
-                    "lawyer-adding",
-                    "mytag"};
+                    "score-adding"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add Lawyer", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 11
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add Score", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+#line 10
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -125,66 +123,26 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
  this.FeatureBackground();
 #line hidden
-                TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Id",
-                            "Username",
-                            "Password",
-                            "Email",
-                            "LawyerName",
-                            "LawyerLastName",
-                            "District",
-                            "Phone",
-                            "University",
-                            "Specialization",
-                            "PriceLegalAdvice",
-                            "PriceCustomContract"});
-                table3.AddRow(new string[] {
-                            "1",
-                            "m123",
-                            "s1",
-                            "m@hotmail.com",
-                            "Mauricio",
-                            "Carmen",
-                            "Callao",
-                            "937598438",
-                            "UPC",
-                            "1",
-                            "40",
-                            "50"});
-#line 12
- testRunner.When("A Post Request is sent", ((string)(null)), table3, "When ");
+                TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                            "start",
+                            "comment"});
+                table1.AddRow(new string[] {
+                            "3",
+                            "Hizo un buen trabajo"});
+#line 11
+ testRunner.When("A Post Request is sent", ((string)(null)), table1, "When ");
 #line hidden
-#line 15
+#line 14
  testRunner.Then("A Response with Status 200 is received", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Id",
-                            "Username",
-                            "Password",
-                            "Email",
-                            "LawyerName",
-                            "LawyerLastName",
-                            "District",
-                            "Phone",
-                            "University",
-                            "Specialization",
-                            "PriceLegalAdvice",
-                            "PriceCustomContract"});
-                table4.AddRow(new string[] {
-                            "1",
-                            "m123",
-                            "s1",
-                            "m@hotmail.com",
-                            "Mauricio",
-                            "Carmen",
-                            "Callao",
-                            "937598438",
-                            "UPC",
-                            "BusinessLaw",
-                            "40",
-                            "50"});
-#line 16
- testRunner.And("A Lawyer Resource is included in Response Body", ((string)(null)), table4, "And ");
+                TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                            "start",
+                            "comment"});
+                table2.AddRow(new string[] {
+                            "3",
+                            "Hizo un buen trabajo"});
+#line 15
+ testRunner.And("A Score Resource is included in Response Body", ((string)(null)), table2, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -197,12 +155,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                LawyerServiceTestsFeature.FeatureSetup();
+                ScoreServiceTestsFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                LawyerServiceTestsFeature.FeatureTearDown();
+                ScoreServiceTestsFeature.FeatureTearDown();
             }
         }
     }
