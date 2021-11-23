@@ -3,12 +3,10 @@
     public class LawyerResource
     {
         public int Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string Username { get; set; }
-        public string Password { get; set; }
         public string Email { get; set; }
-        public string Phone { get; set; }
-        public string LawyerName { get; set; }
-        public string LawyerLastName { get; set; }
         public string District { get; set; }
         public string University { get; set; }
         public string Specialization { get; set; }

@@ -1,25 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
+using Legiz.Back_End.SecurityBC.Domain.Repositories;
+using Legiz.Back_End.SecurityBC.Exceptions;
 using Legiz.Back_End.Shared.Domain.Repositories;
 using Legiz.Back_End.UserProfileBC.Domain.Models;
 using Legiz.Back_End.UserProfileBC.Domain.Repositories;
 using Legiz.Back_End.UserProfileBC.Domain.Services;
 using Legiz.Back_End.UserProfileBC.Domain.Services.Communication;
+using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace Legiz.Back_End.UserProfileBC.Services
 {
     public class LawyerService : ILawyerService
     {
         private readonly ILawyerRepository _lawyerRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ISubscriptionRepository _subscriptionRepository;
+        private readonly IMapper _mapper;
         
-        public LawyerService(ILawyerRepository lawyerRepository, IUnitOfWork unitOfWork, ISubscriptionRepository subscriptionRepository)
+        public LawyerService(ILawyerRepository lawyerRepository, IUnitOfWork unitOfWork, ISubscriptionRepository subscriptionRepository, IUserRepository userRepository, IMapper mapper)
         {
             _lawyerRepository = lawyerRepository;
             _unitOfWork = unitOfWork;
             _subscriptionRepository = subscriptionRepository;
+            _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<Lawyer>> ListAsync()
@@ -27,98 +35,88 @@ namespace Legiz.Back_End.UserProfileBC.Services
             return await _lawyerRepository.ListAsync();
         }
 
-        public async Task<LawyerResponse> GetByIdAsync(int id)
+        public async Task<Lawyer> GetByIdAsync(int id)
         {
-            var existingLawyer = await _lawyerRepository.FindByIdAsync(id);
-
-            if (existingLawyer == null)
-                return new LawyerResponse("Lawyer not found.");
-
-            try
-            {
-                await _unitOfWork.CompleteAsync();
-
-                return new LawyerResponse(existingLawyer);
-            }
-            catch (Exception e)
-            {
-                return new LawyerResponse($"An error occurred while finding the Lawyer: {e.Message}");
-            }
-
+            var lawyer = await _lawyerRepository.FindByIdAsync(id);
+            if (lawyer == null) throw new KeyNotFoundException("Lawyer not found");
+            return lawyer;
         }
 
-        public async Task<LawyerResponse> SaveAsync(Lawyer lawyer)
+        public async Task RegisterAsync(RegisterLawyerRequest request)
         {
             // Validate SubscriptionId
-            var existingSubscription = _subscriptionRepository.FindByIdAsync(lawyer.SubscriptionId);
+            var existingSubscription = _subscriptionRepository.FindByIdAsync(request.SubscriptionId);
 
             if (existingSubscription == null)
-                return new LawyerResponse("Invalid Subscription");
+                throw new AppException($"SubscriptionId {request.SubscriptionId} not found");
             
+            //Validate
+            if (_userRepository.ExistsByUsername(request.Username))
+                throw new AppException($"Lawyer {request.Username} is already taken.");
+            
+            //Map request to Customer
+            var lawyer = _mapper.Map<Lawyer>(request);
+            
+            //Hash password
+            lawyer.PasswordHash = BCryptNet.HashPassword(request.Password);
+            
+            //Save Customer
             try
             {
                 await _lawyerRepository.AddAsync(lawyer);
                 await _unitOfWork.CompleteAsync();
-
-                return new LawyerResponse(lawyer);
             }
             catch (Exception e)
             {
-                return new LawyerResponse($"An error occurred while saving the Lawyer: {e.Message}");
+                throw new AppException($"An error occurred while saving the lawyer: {e.Message}");
             }
         }
 
-        public async Task<LawyerResponse> UpdateAsync(int id, Lawyer lawyer)
+        public async Task UpdateAsync(int id, UpdateLawyerRequest request)
         {
-            var existingLawyer = await _lawyerRepository.FindByIdAsync(id);
+            var lawyer = GetById(id);
 
-            if (existingLawyer == null)
-                return new LawyerResponse("Lawyer not found.");
-            
-            existingLawyer.Username = lawyer.Username;
-            existingLawyer.PasswordHash = lawyer.PasswordHash;
-            existingLawyer.Email = lawyer.Email;
-            existingLawyer.Phone = lawyer.Phone;
-            existingLawyer.LawyerName = lawyer.LawyerName;
-            existingLawyer.LawyerLastName = lawyer.LawyerLastName;
-            existingLawyer.District = lawyer.District;
-            existingLawyer.Specialization = lawyer.Specialization;
-            existingLawyer.University = lawyer.University;
-            existingLawyer.PriceCustomContract = lawyer.PriceCustomContract;
-            existingLawyer.PriceLegalAdvice = lawyer.PriceLegalAdvice;
+            // Validate
+            if (_userRepository.ExistsByUsername(request.Username))
+                throw new AppException($"Customer {request.Username} is already taken.");
+
+            // Hash Password if entered
+            if (!string.IsNullOrEmpty(request.Password))
+                lawyer.PasswordHash = BCryptNet.HashPassword(request.Password);
+
+            // Map request to Customer
+            _mapper.Map(request, lawyer);
 
             try
             {
-                _lawyerRepository.Update(existingLawyer);
+                _lawyerRepository.Update(lawyer);
                 await _unitOfWork.CompleteAsync();
-
-                return new LawyerResponse(existingLawyer);
             }
             catch (Exception e)
             {
-                return new LawyerResponse($"An error occurred while updating the Lawyer: {e.Message}");
+                throw new AppException($"An error occurred while updating the Lawyer: {e.Message}");
             }
-            
         }
 
-        public async Task<LawyerResponse> DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            var existingLawyer = await _lawyerRepository.FindByIdAsync(id);
-
-            if (existingLawyer == null)
-                return new LawyerResponse("Lawyer not found.");
-
+            var lawyer = GetById(id);
             try
             {
-                _lawyerRepository.Remove(existingLawyer);
+                _lawyerRepository.Remove(lawyer);
                 await _unitOfWork.CompleteAsync();
-
-                return new LawyerResponse(existingLawyer);
             }
             catch (Exception e)
             {
-                return new LawyerResponse($"An error occurred while deleting the Lawyer: {e.Message}");
+                throw new AppException($"An error occurred while deleting the Lawyer: {e.Message}");
             }
+        }
+        // Helper Methods
+        private Lawyer GetById(int id)
+        {
+            var lawyer = _lawyerRepository.FindById(id);
+            if (lawyer == null) throw new KeyNotFoundException("Lawyer not found.");
+            return lawyer;
         }
     }
 }

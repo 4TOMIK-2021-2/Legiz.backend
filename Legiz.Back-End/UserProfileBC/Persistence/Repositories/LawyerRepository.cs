@@ -32,7 +32,12 @@ namespace Legiz.Back_End.UserProfileBC.Persistence.Repositories
                 .Include(p => p.Subscription)
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
-
+        
+        public Lawyer FindById(int id)
+        {
+            return _context.Lawyers.Find(id);
+        }
+        
         public void Update(Lawyer lawyer)
         {
             _context.Lawyers.Update(lawyer);

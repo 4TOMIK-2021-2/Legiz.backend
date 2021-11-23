@@ -29,6 +29,11 @@ namespace Legiz.Back_End.UserProfileBC.Persistence.Repositories
             return await _context.Customers.FindAsync(id);
         }
 
+        public Customer FindById(int id)
+        {
+            return _context.Customers.Find(id);
+        }
+
         public void Update(Customer customer)
         {
             _context.Customers.Update(customer);
