@@ -16,4 +16,6 @@ Scenario: Add Lawyer
 	And A Lawyer Resource is included in Response Body
 	  | Id | Username | Password | Email         | LawyerName | LawyerLastName | District | Phone     | University | Specialization | PriceLegalAdvice | PriceCustomContract |
 	  | 1  | m123     | s1       | m@hotmail.com | Mauricio   | Carmen         | Callao   | 937598438 | UPC        | BusinessLaw              | 40               | 50        |
-   
+  
+
+

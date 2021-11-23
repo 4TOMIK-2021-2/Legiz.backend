@@ -29,10 +29,10 @@ namespace Legiz.Back_End.UserProfileBC.Controllers
             Description = "Get All Lawyers already stored",
             Tags = new[] {"Lawyers"})]
         [HttpGet]
-        public async Task<IEnumerable<LawyerResource>> GetAllAsync()
+        public async Task<IEnumerable<LawyerSubscriptionResource>> GetAllAsync()
         {
             var lawyers = await _lawyerService.ListAsync();
-            var resource = _mapper.Map<IEnumerable<Lawyer>,IEnumerable<LawyerResource>>(lawyers);
+            var resource = _mapper.Map<IEnumerable<Lawyer>,IEnumerable<LawyerSubscriptionResource>>(lawyers);
             
             return resource;
         }
@@ -54,7 +54,7 @@ namespace Legiz.Back_End.UserProfileBC.Controllers
             if (!result.Success)
                 return BadRequest(result.Message);
 
-            var lawyerResource = _mapper.Map<Lawyer, LawyerResource>(result.Resource);
+            var lawyerResource = _mapper.Map<Lawyer, LawyerSubscriptionResource>(result.Resource);
             return Ok(lawyerResource);
         }
         
@@ -75,8 +75,8 @@ namespace Legiz.Back_End.UserProfileBC.Controllers
             if (!result.Success)
                 return BadRequest(result.Message);
 
-            var categoryResource = _mapper.Map<Lawyer, LawyerResource>(result.Resource);
-            return Ok(categoryResource);
+            var customerResource = _mapper.Map<Lawyer, LawyerSubscriptionResource>(result.Resource);
+            return Ok(customerResource);
         }
         
         [SwaggerOperation(
@@ -91,8 +91,8 @@ namespace Legiz.Back_End.UserProfileBC.Controllers
             if (!result.Success)
                 return BadRequest(result.Message);
 
-            var categoryResource = _mapper.Map<Lawyer, LawyerResource>(result.Resource);
-            return Ok(categoryResource);
+            var lawyerResource = _mapper.Map<Lawyer, LawyerSubscriptionResource>(result.Resource);
+            return Ok(lawyerResource);
         }
         
         [SwaggerOperation(
@@ -107,8 +107,8 @@ namespace Legiz.Back_End.UserProfileBC.Controllers
             if (!result.Success)
                 return BadRequest(result.Message);
 
-            var categoryResource = _mapper.Map<Lawyer, LawyerResource>(result.Resource);
-            return Ok(categoryResource);
+            var lawyerResource = _mapper.Map<Lawyer, LawyerSubscriptionResource>(result.Resource);
+            return Ok(lawyerResource);
         }
     }
 }

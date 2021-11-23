@@ -1,8 +1,12 @@
-﻿namespace Legiz.Back_End.UserProfileBC.Domain.Models
+﻿using System.Collections.Generic;
+using Legiz.Back_End.LawServiceBC.Domain.Models;
+
+namespace Legiz.Back_End.UserProfileBC.Domain.Models
 {
     public class Customer : User
     {
-        private string CustomerName { get; set; }
-        private string CustomerLastName { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerLastName { get; set; }
+        
     }
 }

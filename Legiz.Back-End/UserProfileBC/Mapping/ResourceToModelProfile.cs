@@ -8,9 +8,15 @@ namespace Legiz.Back_End.UserProfileBC.Mapping
     {
         public ResourceToModelProfile()
         {
+            CreateMap<SaveCustomerResource, Customer>();
+            
             CreateMap<SaveLawyerResource, Lawyer>()
                 .ForMember(target => target.Specialization,
                     options => options.MapFrom(source => (ESpecialization) source.Specialization));
+            
+            CreateMap<SaveSubscriptionResource, Subscription>()
+                .ForMember(target => target.State,
+                    options => options.MapFrom(source => (EState) source.State));
         }
     }
 }
